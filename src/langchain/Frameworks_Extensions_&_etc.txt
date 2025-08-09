@@ -1,0 +1,25 @@
+python 3.11
+
+Core Frameworks - FastAPI, uvicorn
+
+Langchain & Extensions - langchain, langchain-community, langchain-google-genai
+
+Document Handling - pypdf, openpyxl
+
+Embeddings - sentence-transformers
+
+Vector Database - chromadb
+
+Data Processing - pandas
+
+openai for OpenAI API client (just in case)
+
+others: pydantic, python-multipart huggingface-hub
+
+
+
+pip install fastapi uvicorn[standard] \
+langchain langchain-community langchain-google-genai \
+huggingface-hub sentence-transformers chromadb \
+pandas openpyxl \
+pydantic python-multipart

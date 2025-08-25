@@ -1,0 +1,1805 @@
+import React, { useState, useEffect } from 'react';
+import { Home, Users, Target, AlertTriangle, Lightbulb, BarChart3, FileText, TrendingUp } from 'lucide-react';
+
+
+const GripDashboard = () => {
+  const [activeTab, setActiveTab] = useState('home');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const StatCard = ({ title, value, style = {} }) => (
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '16px',
+      padding: '24px',
+      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+      border: '1px solid #f3f4f6',
+      height: isMobile ? 'auto' : '128px',
+      ...style
+    }}>
+      <h3 style={{
+        color: '#6b7280',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginBottom: '8px'
+      }}>{title}</h3>
+      <p style={{
+        fontSize: '30px',
+        fontWeight: 'bold',
+        color: '#111827'
+      }}>{value}</p>
+    </div>
+  );
+
+  const InsightCard = ({ icon: Icon, title, subtitle, style = {} }) => (
+    <div style={{
+      backgroundColor: '#fff7ed',
+      borderRadius: '12px',
+      padding: '16px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      ...style
+    }}>
+      <div style={{
+        width: '32px',
+        height: '32px',
+        backgroundColor: '#fed7aa',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexShrink: 0
+      }}>
+        <Icon style={{ width: '16px', height: '16px', color: '#c2410c' }} />
+      </div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <h4 style={{
+          fontWeight: '600',
+          color: '#111827',
+          fontSize: '14px',
+          marginBottom: '2px'
+        }}>{title}</h4>
+        <p style={{
+          color: '#6b7280',
+          fontSize: '12px'
+        }}>{subtitle}</p>
+      </div>
+    </div>
+  );
+
+  const ToolCard = ({ icon: Icon, title, subtitle }) => (
+    <div style={{
+      backgroundColor: 'white',
+      borderRadius: '12px',
+      padding: '16px',
+      boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+      border: '1px solid #f3f4f6',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px'
+    }}>
+      <div style={{
+        width: '40px',
+        height: '40px',
+        backgroundColor: '#f3f4f6',
+        borderRadius: '8px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <Icon style={{ width: '20px', height: '20px', color: '#374151' }} />
+      </div>
+      <div>
+        <h4 style={{
+          fontWeight: '600',
+          color: '#111827',
+          marginBottom: '2px'
+        }}>{title}</h4>
+        <p style={{
+          color: '#6b7280',
+          fontSize: '14px'
+        }}>{subtitle}</p>
+      </div>
+    </div>
+  );
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'home':
+        return (
+          <div style={{
+            flex: 1,
+            padding: isMobile ? '16px 16px 80px 16px' : '16px'
+          }}>
+            {/* Mobile Header */}
+            {isMobile && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '32px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <img 
+                    src="/logo.png" 
+                    alt="Grip Logo"
+                    style={{
+                      width: '40px',
+                      height: '32px',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <span style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    color: '#111827'
+                  }}>Grip</span>
+                </div>
+              </div>
+            )}
+
+            {/* Desktop Layout */}
+            {!isMobile && (
+              <div style={{
+                display: 'flex',
+                gap: '32px',
+                height: '100%'
+              }}>
+                {/* Left Column - Stats */}
+                <div style={{ width: '50%' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <StatCard title="Total Partners" value="127" />
+                    <StatCard title="Avg Trust Score" value="89.5" />
+                    <StatCard title="Opportunities" value="24" />
+                    <StatCard title="Risk Alerts" value="7" />
+                  </div>
+                </div>
+
+                {/* Right Column - AI Insights & Tools */}
+                <div style={{ width: '50%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                  {/* AI Insights */}
+                  <div style={{
+                    backgroundColor: 'white',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                    border: '1px solid #f3f4f6'
+                  }}>
+                    <h2 style={{
+                      fontSize: '20px',
+                      fontWeight: '600',
+                      color: '#111827',
+                      marginBottom: '24px'
+                    }}>AI Insights</h2>
+                    {/* add on-click papunta sa opportunity list */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      <InsightCard 
+                        icon={Lightbulb}
+                        title="Ecosystem Simulator"  
+                        subtitle="Run what-if scenarios"
+                      />
+                      <InsightCard 
+                        icon={Target}
+                        title="New Opportunity Detected"
+                        subtitle="Combining Ayala Land + BPI Housing Loans"
+                      />
+                      <InsightCard 
+                        icon={Lightbulb}
+                        title="Ecosystem Simulator"
+                        subtitle="Run what-if scenarios"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Tools */}
+                  <ToolCard 
+                    icon={BarChart3}
+                    title="Ecosystem Simulator"
+                    subtitle="Run what-if scenarios"
+                  />
+                  <ToolCard 
+                    icon={FileText}
+                    title="Contract Strategist"
+                    subtitle="Review and Optimize terms"
+                  />
+                </div>
+              </div>
+            )}
+
+            {/* Mobile Layout */}
+            {isMobile && (
+              <div>
+                {/* Stats Grid */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: '16px',
+                  marginBottom: '24px'
+                }}>
+                  <StatCard title="Total Partners" value="127" />
+                  <StatCard title="Avg Trust Score" value="89.5" />
+                  <StatCard title="Opportunities" value="24" />
+                  <StatCard title="Risk Alerts" value="7" />
+                </div>
+
+                {/* AI Insights */}
+                <div style={{
+                  backgroundColor: 'white',
+                  borderRadius: '16px',
+                  padding: '24px',
+                  boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                  border: '1px solid #f3f4f6',
+                  marginBottom: '24px'
+                }}>
+                  <h2 style={{
+                    fontSize: '18px',
+                    fontWeight: '600',
+                    color: '#111827',
+                    marginBottom: '16px'
+                  }}>AI Insights</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <InsightCard 
+                      icon={Lightbulb}
+                      title="Ecosystem Simulator"
+                      subtitle="Run what-if scenarios"
+                    />
+                    <InsightCard 
+                      icon={Target}
+                      title="New Opportunity Detected"
+                      subtitle="Combining Ayala Land + BPI Housing Loans"
+                    />
+                    <InsightCard 
+                      icon={Lightbulb}
+                      title="Ecosystem Simulator"
+                      subtitle="Run what-if scenarios"
+                    />
+                  </div>
+                </div>
+
+                {/* Tools */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <ToolCard 
+                    icon={BarChart3}
+                    title="Ecosystem Simulator"
+                    subtitle="Run what-if scenarios"
+                  />
+                  {/* ilagay ang ui ng contract strategist, nasa investor dashboard */}
+                  <ToolCard 
+                    icon={FileText}
+                    title="Contract Strategist"
+                    subtitle="Review and Optimize terms"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      case 'partners':
+        return (
+          <div style={{
+            flex: 1,
+            padding: isMobile ? '16px 16px 80px 16px' : '16px'
+          }}>
+            {/* Mobile Header */}
+            {isMobile && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '24px',
+                position: 'relative'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <img 
+                      src="/logo.png" 
+                      alt="Grip Logo"
+                      style={{
+                        width: '40px',
+                        height: '32px',
+                        borderRadius: '8px'
+                      }}
+                    />
+                  <span style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    color: '#111827'
+                  }}>Grip</span>
+                </div>
+              </div>
+            )}
+
+            <h1 style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: '#111827',
+              marginBottom: '24px'
+            }}>Partners Page</h1>
+
+            {/* Search and Filter */}
+            <div style={{
+              display: 'flex',
+              gap: '12px',
+              marginBottom: '24px'
+            }}>
+              <div style={{
+                flex: 1,
+                position: 'relative'
+              }}>
+                <input
+                  type="text"
+                  placeholder="Search"
+                  style={{
+                    width: '100%',
+                    padding: '12px 16px 12px 44px',
+                    borderRadius: '24px',
+                    border: '1px solid #e5e7eb',
+                    fontSize: '16px',
+                    outline: 'none'
+                  }}
+                />
+                <div style={{
+                  position: 'absolute',
+                  left: '16px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: '#9ca3af'
+                }}>
+                  🔍
+                </div>
+              </div>
+              <button style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: '24px',
+                border: '1px solid #e5e7eb',
+                backgroundColor: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}>
+                🔽
+              </button>
+            </div>
+
+            {/* Partners List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Globe Telecom */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#10b981',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Globe Telecom</h3>
+                  </div>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '12px'
+                  }}>Fintech Partner</p>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px'
+                  }}>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Engagement Score</p>
+                      <p style={{ fontWeight: '600', color: '#111827' }}>94</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Risk Level</p>
+                      <p style={{ fontWeight: '600', color: '#10b981' }}>Low</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Opportunities</p>
+                      <p style={{ fontWeight: '600', color: '#8b5cf6' }}>3</p>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ color: '#d1d5db', fontSize: '20px' }}>›</div>
+              </div>
+
+              {/* Ayala Healthcare */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#3b82f6',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Ayala Healthcare</h3>
+                  </div>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '12px'
+                  }}>Group Company</p>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px'
+                  }}>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Trust Score</p>
+                      <p style={{ fontWeight: '600', color: '#111827' }}>98</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Risk Level</p>
+                      <p style={{ fontWeight: '600', color: '#10b981' }}>Low</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Opportunities</p>
+                      <p style={{ fontWeight: '600', color: '#8b5cf6' }}>5</p>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ color: '#d1d5db', fontSize: '20px' }}>›</div>
+              </div>
+
+              {/* TechVendor Inc */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#f59e0b',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>TechVendor Inc</h3>
+                  </div>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '12px'
+                  }}>IT Vendor</p>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px'
+                  }}>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Trust Score</p>
+                      <p style={{ fontWeight: '600', color: '#111827' }}>78</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Risk Level</p>
+                      <p style={{ fontWeight: '600', color: '#f59e0b' }}>Medium</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Opportunities</p>
+                      <p style={{ fontWeight: '600', color: '#8b5cf6' }}>1</p>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ color: '#d1d5db', fontSize: '20px' }}>›</div>
+              </div>
+
+              {/* Regulatory Corp */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#8b5cf6',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Regulatory Corp</h3>
+                  </div>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '12px'
+                  }}>Compliance Partner</p>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px'
+                  }}>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Trust Score</p>
+                      <p style={{ fontWeight: '600', color: '#111827' }}>88</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Risk Level</p>
+                      <p style={{ fontWeight: '600', color: '#10b981' }}>Low</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Opportunities</p>
+                      <p style={{ fontWeight: '600', color: '#8b5cf6' }}>2</p>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ color: '#d1d5db', fontSize: '20px' }}>›</div>
+              </div>
+
+              {/* Additional Partners (duplicated for demo) */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#3b82f6',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Ayala Healthcare</h3>
+                  </div>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '12px'
+                  }}>Group Company</p>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px'
+                  }}>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Trust Score</p>
+                      <p style={{ fontWeight: '600', color: '#111827' }}>98</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Risk Level</p>
+                      <p style={{ fontWeight: '600', color: '#10b981' }}>Low</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Opportunities</p>
+                      <p style={{ fontWeight: '600', color: '#8b5cf6' }}>5</p>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ color: '#d1d5db', fontSize: '20px' }}>›</div>
+              </div>
+
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between'
+              }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#f59e0b',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>TechVendor Inc</h3>
+                  </div>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '12px'
+                  }}>IT Vendor</p>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    fontSize: '12px'
+                  }}>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Trust Score</p>
+                      <p style={{ fontWeight: '600', color: '#111827' }}>78</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Risk Level</p>
+                      <p style={{ fontWeight: '600', color: '#f59e0b' }}>Medium</p>
+                    </div>
+                    <div>
+                      <p style={{ color: '#6b7280', marginBottom: '2px' }}>Opportunities</p>
+                      <p style={{ fontWeight: '600', color: '#8b5cf6' }}>1</p>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ color: '#d1d5db', fontSize: '20px' }}>›</div>
+              </div>
+            </div>
+          </div>
+        );
+      case 'opportunities':
+        return (
+          <div style={{
+            flex: 1,
+            padding: isMobile ? '16px 16px 80px 16px' : '16px'
+          }}>
+            {/* Mobile Header */}
+            {isMobile && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '32px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <img 
+                    src="/logo.png" 
+                    alt="Grip Logo"
+                    style={{
+                      width: '40px',
+                      height: '32px',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <span style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    color: '#111827'
+                  }}>Grip</span>
+                </div>
+              </div>
+            )}
+
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: isMobile ? 'flex-start' : 'center',
+              flexDirection: isMobile ? 'column' : 'row',
+              gap: isMobile ? '8px' : '0',
+              marginBottom: '24px'
+            }}>
+              <h1 style={{
+                fontSize: '24px',
+                fontWeight: 'bold',
+                color: '#111827'
+              }}>AI-Discovered Opportunities</h1>
+              <p style={{
+                color: '#6b7280',
+                fontSize: '14px'
+              }}>24 Active</p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Instant Health Loans */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      marginBottom: '8px'
+                    }}>
+                      <h3 style={{
+                        fontWeight: '600',
+                        color: '#111827',
+                        fontSize: '16px'
+                      }}>Instant health loans</h3>
+                      <div style={{ color: '#d1d5db', fontSize: '16px' }}>↗</div>
+                    </div>
+                    <div style={{
+                      backgroundColor: '#f97316',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      display: 'inline-block'
+                    }}>
+                      High Priority
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '16px'
+                }}>
+                  <div>
+                    <p style={{
+                      color: '#3b82f6',
+                      fontSize: '14px',
+                      marginBottom: '2px'
+                    }}>Projected ROI</p>
+                    <p style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#111827'
+                    }}>340%</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{
+                      color: '#6b7280',
+                      fontSize: '14px',
+                      marginBottom: '2px'
+                    }}>Development Timeline</p>
+                    <p style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#111827'
+                    }}>6 months</p>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '8px'
+                  }}>Key Partners</p>
+                  <div style={{
+                    display: 'flex',
+                    gap: '8px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <span style={{
+                      backgroundColor: '#475569',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px'
+                    }}>Ayala Healthcare</span>
+                    <span style={{
+                      backgroundColor: '#475569',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px'
+                    }}>Globe Telecom</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#10b981',
+                      borderRadius: '50%'
+                    }} />
+                    <span style={{
+                      color: '#6b7280',
+                      fontSize: '12px'
+                    }}>Confidence: 93%</span>
+                  </div>
+                  <button style={{
+                    backgroundColor: '#f97316',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>
+                    Analyze
+                  </button>
+                </div>
+              </div>
+
+              {/* Climate-based Insurance */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px',
+                      marginBottom: '8px'
+                    }}>Climate-based Insurance</h3>
+                    <div style={{
+                      backgroundColor: '#f59e0b',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      display: 'inline-block'
+                    }}>
+                      Medium Priority
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '16px'
+                }}>
+                  <div>
+                    <p style={{
+                      color: '#6b7280',
+                      fontSize: '14px',
+                      marginBottom: '2px'
+                    }}>Projected ROI</p>
+                    <p style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#111827'
+                    }}>185%</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{
+                      color: '#6b7280',
+                      fontSize: '14px',
+                      marginBottom: '2px'
+                    }}>Timeline</p>
+                    <p style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#111827'
+                    }}>8 months</p>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '8px'
+                  }}>Key Partners</p>
+                  <div style={{
+                    display: 'flex',
+                    gap: '8px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <span style={{
+                      backgroundColor: '#475569',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px'
+                    }}>Weather Analytics</span>
+                    <span style={{
+                      backgroundColor: '#475569',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px'
+                    }}>AgriTech Corp</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#10b981',
+                      borderRadius: '50%'
+                    }} />
+                    <span style={{
+                      color: '#6b7280',
+                      fontSize: '12px'
+                    }}>Confidence: 78%</span>
+                  </div>
+                  <button style={{
+                    backgroundColor: '#f97316',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>
+                    Analyze
+                  </button>
+                </div>
+              </div>
+
+              {/* Rural MSMEs Cash Flow */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '16px'
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px',
+                      marginBottom: '8px'
+                    }}>Rural MSMEs Cash Flow</h3>
+                    <div style={{
+                      backgroundColor: '#f97316',
+                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '12px',
+                      fontWeight: '500',
+                      display: 'inline-block'
+                    }}>
+                      High Priority
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '16px'
+                }}>
+                  <div>
+                    <p style={{
+                      color: '#6b7280',
+                      fontSize: '14px',
+                      marginBottom: '2px'
+                    }}>Projected ROI</p>
+                    <p style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#111827'
+                    }}>185%</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{
+                      color: '#6b7280',
+                      fontSize: '14px',
+                      marginBottom: '2px'
+                    }}>Timeline</p>
+                    <p style={{
+                      fontSize: '24px',
+                      fontWeight: 'bold',
+                      color: '#111827'
+                    }}>6 months</p>
+                  </div>
+                </div>
+
+                <div style={{ marginBottom: '16px' }}>
+                  <p style={{
+                    color: '#6b7280',
+                    fontSize: '14px',
+                    marginBottom: '8px'
+                  }}>Key Partners</p>
+                  <div style={{
+                    display: 'flex',
+                    gap: '8px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <span style={{
+                      backgroundColor: '#475569',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px'
+                    }}>Weather Analytics</span>
+                    <span style={{
+                      backgroundColor: '#475569',
+                      color: 'white',
+                      padding: '6px 12px',
+                      borderRadius: '12px',
+                      fontSize: '12px'
+                    }}>AgriTech Corp</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px'
+                  }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#10b981',
+                      borderRadius: '50%'
+                    }} />
+                    <span style={{
+                      color: '#6b7280',
+                      fontSize: '12px'
+                    }}>Confidence: 78%</span>
+                  </div>
+                  <button style={{
+                    backgroundColor: '#f97316',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>
+                    Analyze
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      
+      case 'risk':
+        return (
+          <div style={{
+            flex: 1,
+            padding: isMobile ? '16px 16px 80px 16px' : '16px'
+          }}>
+            {/* Mobile Header */}
+            {isMobile && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginBottom: '32px'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <img 
+                    src="/logo.png" 
+                    alt="Grip Logo"
+                    style={{
+                      width: '40px',
+                      height: '32px',
+                      borderRadius: '8px'
+                    }}
+                  />
+                  <span style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    color: '#111827'
+                  }}>Grip</span>
+                </div>
+              </div>
+            )}
+
+            <h1 style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: '#111827',
+              marginBottom: '24px'
+            }}>Risk Metrics</h1>
+
+            {/* Risk Overview */}
+            <div style={{
+              backgroundColor: 'white',
+              borderRadius: '16px',
+              padding: '24px',
+              boxShadow: '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+              border: '1px solid #f3f4f6',
+              marginBottom: '32px'
+            }}>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px'
+              }}>
+                {/* Operational Risk */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '8px'
+                  }}>
+                    <span style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Operational Risk</span>
+                    <span style={{
+                      fontWeight: '600',
+                      color: '#10b981',
+                      fontSize: '14px'
+                    }}>Low</span>
+                  </div>
+                  <div style={{
+                    height: '8px',
+                    backgroundColor: '#f3f4f6',
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: '25%',
+                      backgroundColor: '#10b981',
+                      borderRadius: '4px'
+                    }} />
+                  </div>
+                </div>
+
+                {/* Financial Risk */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '8px'
+                  }}>
+                    <span style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Financial Risk</span>
+                    <span style={{
+                      fontWeight: '600',
+                      color: '#10b981',
+                      fontSize: '14px'
+                    }}>Low</span>
+                  </div>
+                  <div style={{
+                    height: '8px',
+                    backgroundColor: '#f3f4f6',
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: '30%',
+                      backgroundColor: '#10b981',
+                      borderRadius: '4px'
+                    }} />
+                  </div>
+                </div>
+
+                {/* Regulatory Risk */}
+                <div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '8px'
+                  }}>
+                    <span style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Regulatory Risk</span>
+                    <span style={{
+                      fontWeight: '600',
+                      color: '#f59e0b',
+                      fontSize: '14px'
+                    }}>Medium</span>
+                  </div>
+                  <div style={{
+                    height: '8px',
+                    backgroundColor: '#f3f4f6',
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div style={{
+                      height: '100%',
+                      width: '60%',
+                      backgroundColor: '#f59e0b',
+                      borderRadius: '4px'
+                    }} />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Risk Alerts */}
+            <h2 style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              color: '#111827',
+              marginBottom: '24px'
+            }}>Risk Alerts</h2>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {/* Contract Risk Alert */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: '12px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#f59e0b',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Contract Risk</h3>
+                  </div>
+                  <span style={{
+                    color: '#9ca3af',
+                    fontSize: '14px'
+                  }}>2h</span>
+                </div>
+                <p style={{
+                  color: '#111827',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  marginBottom: '4px'
+                }}>TechVendor Inc</p>
+                <p style={{
+                  color: '#6b7280',
+                  fontSize: '14px',
+                  marginBottom: '16px'
+                }}>ESG compliance clause outdated</p>
+                <div style={{
+                  display: 'flex',
+                  gap: '12px'
+                }}>
+                  <button style={{
+                    backgroundColor: '#ea580c',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>Review</button>
+                  <button style={{
+                    backgroundColor: '#f3f4f6',
+                    color: '#374151',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>Dismiss</button>
+                </div>
+              </div>
+
+              {/* Performance Risk Alert */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: '12px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#374151',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Performance Risk</h3>
+                  </div>
+                  <span style={{
+                    color: '#9ca3af',
+                    fontSize: '14px'
+                  }}>4h</span>
+                </div>
+                <p style={{
+                  color: '#111827',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  marginBottom: '4px'
+                }}>Payment Gateway</p>
+                <p style={{
+                  color: '#6b7280',
+                  fontSize: '14px',
+                  marginBottom: '16px'
+                }}>Response time degraded by 15%</p>
+                <div style={{
+                  display: 'flex',
+                  gap: '12px'
+                }}>
+                  <button style={{
+                    backgroundColor: '#ea580c',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>Review</button>
+                  <button style={{
+                    backgroundColor: '#f3f4f6',
+                    color: '#374151',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>Dismiss</button>
+                </div>
+              </div>
+
+              {/* Regulatory Risk Alert */}
+              <div style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                padding: '20px',
+                boxShadow: '0 2px 8px 0 rgba(0, 0, 0, 0.1)',
+                border: '1px solid #f3f4f6'
+              }}>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  marginBottom: '12px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                    <div style={{
+                      width: '8px',
+                      height: '8px',
+                      backgroundColor: '#ea580c',
+                      borderRadius: '50%'
+                    }} />
+                    <h3 style={{
+                      fontWeight: '600',
+                      color: '#111827',
+                      fontSize: '16px'
+                    }}>Regulatory Risk</h3>
+                  </div>
+                  <span style={{
+                    color: '#9ca3af',
+                    fontSize: '14px'
+                  }}>1h</span>
+                </div>
+                <p style={{
+                  color: '#111827',
+                  fontSize: '14px',
+                  fontWeight: '500',
+                  marginBottom: '4px'
+                }}>Multiple Partners</p>
+                <p style={{
+                  color: '#6b7280',
+                  fontSize: '14px',
+                  marginBottom: '16px'
+                }}>BSP policy change affecting 3 partnerships</p>
+                <div style={{
+                  display: 'flex',
+                  gap: '12px'
+                }}>
+                  <button style={{
+                    backgroundColor: '#ea580c',
+                    color: 'white',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>Review</button>
+                  <button style={{
+                    backgroundColor: '#f3f4f6',
+                    color: '#374151',
+                    padding: '8px 16px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    cursor: 'pointer'
+                  }}>Dismiss</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  const containerStyle = {
+    minHeight: '100vh',
+    backgroundColor: '#f9fafb',
+    display: 'flex',
+    flexDirection: 'column',
+    maxWidth: isMobile ? '448px' : '100%',
+    margin: '0 auto',
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+  };
+
+  const desktopHeaderStyle = {
+    display: isMobile ? 'none' : 'block',
+    backgroundColor: 'white',
+    borderBottom: '1px solid #e5e7eb',
+    padding: '24px'
+  };
+
+  const headerContentStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    maxWidth: '1280px',
+    margin: '0 auto'
+  };
+
+  const logoContainerStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '8px'
+  };
+
+  const logoStyle = {
+    width: '40px',
+    height: '40px',
+    background: 'linear-gradient(to right, #f97316, #ea580c)',
+    borderRadius: '8px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  };
+
+  const logoTextStyle = {
+    color: 'white',
+    fontWeight: 'bold'
+  };
+
+  const brandTextStyle = {
+    fontSize: '30px',
+    fontWeight: 'bold',
+    color: '#111827'
+  };
+
+  const headerStatsStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '32px',
+    fontSize: '18px',
+    color: '#6b7280'
+  };
+
+  const desktopSidebarStyle = {
+    display: isMobile ? 'none' : 'block',
+    width: '320px',
+    backgroundColor: 'white',
+    borderRight: '1px solid #e5e7eb',
+    padding: '24px'
+  };
+
+  const navStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '12px'
+  };
+
+  const getNavButtonStyle = (tabName) => ({
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    padding: '12px 16px',
+    borderRadius: '12px',
+    textAlign: 'left',
+    fontWeight: '500',
+    border: 'none',
+    cursor: 'pointer',
+    backgroundColor: activeTab === tabName ? '#fff7ed' : 'transparent',
+    color: activeTab === tabName ? '#c2410c' : '#374151'
+  });
+
+  const mainLayoutStyle = {
+    flex: 1,
+    display: isMobile ? 'block' : 'flex'
+  };
+
+  const contentAreaStyle = {
+    flex: 1,
+    padding: isMobile ? '0' : '24px'
+  };
+
+  const desktopContentWrapperStyle = {
+    backgroundColor: isMobile ? 'transparent' : 'white',
+    borderRadius: isMobile ? '0' : '16px',
+    boxShadow: isMobile ? 'none' : '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+    border: isMobile ? 'none' : '1px solid #f3f4f6',
+    minHeight: isMobile ? 'auto' : '600px'
+  };
+
+  const bottomNavStyle = {
+    display: isMobile ? 'block' : 'none',
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: 'white',
+    borderTop: '1px solid #e5e7eb',
+    padding: '8px 16px'
+  };
+
+  const bottomNavContentStyle = {
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    maxWidth: '448px',
+    margin: '0 auto'
+  };
+
+  const getBottomNavButtonStyle = (tabName) => ({
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '4px',
+    padding: '8px',
+    border: 'none',
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    color: activeTab === tabName ? '#ea580c' : '#6b7280'
+  });
+
+  const bottomNavTextStyle = {
+    fontSize: '12px'
+  };
+
+  return (
+    <div style={containerStyle}>
+      {/* Desktop Header */}
+      <div style={desktopHeaderStyle}>
+        <div style={headerContentStyle}>
+          <div style={logoContainerStyle}>
+              <img 
+                src="/logo.png" 
+                alt="Grip Logo"
+                style={{
+                  width: '40px',
+                  height: '32px',
+                  borderRadius: '8px'
+                }}
+              />
+            <span style={brandTextStyle}>Grip</span>
+          </div>
+          <div style={headerStatsStyle}>
+            <span>Total Partners: <span style={{ fontWeight: '600', color: '#111827' }}>127</span></span>
+            <span>Avg Trust Score: <span style={{ fontWeight: '600', color: '#111827' }}>89.5</span></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div style={mainLayoutStyle}>
+        {/* Desktop Sidebar */}
+        <div style={desktopSidebarStyle}>
+          <nav style={navStyle}>
+            <button
+              onClick={() => setActiveTab('home')}
+              style={getNavButtonStyle('home')}
+            >
+              <Home style={{ width: '24px', height: '24px' }} />
+              Dashboard
+            </button>
+            <button
+              onClick={() => setActiveTab('partners')}
+              style={getNavButtonStyle('partners')}
+            >
+              <Users style={{ width: '24px', height: '24px' }} />
+              Partners
+            </button>
+            <button
+              onClick={() => setActiveTab('opportunities')}
+              style={getNavButtonStyle('opportunities')}
+            >
+              <Target style={{ width: '24px', height: '24px' }} />
+              AI Opportunities  {/* lagyan ng onclick papunta naman sa OpportunitiesList */}
+            </button>
+            <button
+              onClick={() => setActiveTab('risk')}
+              style={getNavButtonStyle('risk')}
+            >
+              <AlertTriangle style={{ width: '24px', height: '24px' }} />
+              Risk Metrics
+            </button>
+          </nav>
+        </div>
+
+        {/* Content Area */}
+        <div style={contentAreaStyle}>
+          <div style={desktopContentWrapperStyle}>
+            {renderContent()}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div style={bottomNavStyle}>
+        <div style={bottomNavContentStyle}>
+          <button
+            onClick={() => setActiveTab('home')}
+            style={getBottomNavButtonStyle('home')}
+          >
+            <TrendingUp style={{ width: '20px', height: '20px' }} />
+            <span style={bottomNavTextStyle}>Home</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('partners')}
+            style={getBottomNavButtonStyle('partners')}
+          >
+            <Users style={{ width: '20px', height: '20px' }} />
+            <span style={bottomNavTextStyle}>Partners</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('opportunities')}
+            style={getBottomNavButtonStyle('opportunities')}
+          >
+            <Target style={{ width: '20px', height: '20px' }} />
+            <span style={bottomNavTextStyle}>AI Opportunities</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('risk')}
+            style={getBottomNavButtonStyle('risk')}
+          >
+            <AlertTriangle style={{ width: '20px', height: '20px' }} />
+            <span style={bottomNavTextStyle}>Risk Metrics</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default GripDashboard;

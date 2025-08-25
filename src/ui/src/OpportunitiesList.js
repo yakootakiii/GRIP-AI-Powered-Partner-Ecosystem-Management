@@ -1,3 +1,5 @@
+// redesign para mag fit sa homepage
+
 import React from 'react';
 import { TrendingUp } from 'lucide-react';
 
